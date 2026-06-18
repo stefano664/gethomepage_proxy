@@ -17,8 +17,12 @@ homepage-proxy/
 ├── registry.js                  ← enable/disable providers
 ├── providers/
 │   ├── base.js                  ← abstract BaseProvider class
-│   ├── hetzner-s3.js            ← Hetzner Object Storage (S3-compatible)
-│   └── template-example.js      ← template for new providers
+│   └── hetzner-s3.js            ← Hetzner Object Storage (S3-compatible)
+├── template-example.js          ← template to copy when adding a new provider
+├── img/
+│   └── logo.png
+├── Dockerfile
+├── .dockerignore
 ├── package.json
 ├── docker-compose.yml
 └── homepage-services.yaml       ← snippet for Homepage
