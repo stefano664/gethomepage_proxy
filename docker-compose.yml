@@ -1,0 +1,36 @@
+services:
+  homepage-proxy:
+    image: node:20-alpine
+    container_name: homepage-proxy
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && node server.js"
+
+    environment:
+      PORT: "3456"
+
+      # ── Provider: hetzner-s3 ───────────────────────────────────────────────
+      # Commenta o rimuovi questa sezione se non usi Hetzner Object Storage
+      HETZNER_ENDPOINT:   "https://fsn1.your-objectstorage.com"  # fsn1 / nbg1 / hel1
+      HETZNER_REGION:     "eu-central"
+      HETZNER_ACCESS_KEY: "il_tuo_access_key"
+      HETZNER_SECRET_KEY: "il_tuo_secret_key"
+      HETZNER_BUCKET:     "nome_del_tuo_bucket"
+      HETZNER_QUOTA_GB:   "1024"
+
+      # ── Provider: template-example (esempio) ──────────────────────────────
+      # MYSERVICE_URL:   "https://api.example.com"
+      # MYSERVICE_TOKEN: "il_tuo_token"
+
+      # Aggiungi qui le variabili dei provider che abiliterai in futuro
+
+    ports:
+      - "3456:3456"
+    restart: unless-stopped
+    networks:
+      - homepage_default   # deve corrispondere alla network del container Homepage
+
+networks:
+  homepage_default:
+    external: true

@@ -1,0 +1,47 @@
+# ── Snippet per Homepage services.yaml ────────────────────────────────────────
+#
+# Ogni provider ha il suo endpoint:  http://homepage-proxy:3456/api/<nome>
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+- Storage:
+    - Hetzner Bucket:
+        icon: hetzner.png
+        description: Object Storage
+        widget:
+          type: customapi
+          url: http://homepage-proxy:3456/api/hetzner-s3
+          refreshInterval: 60000
+          mappings:
+            - field: used_gb
+              label: Usato (GB)
+              format: float
+              suffix: " GB"
+            - field: total_gb
+              label: Totale (GB)
+              format: float
+              suffix: " GB"
+            - field: used_pct
+              label: Utilizzo
+              format: float
+              suffix: "%"
+            - field: objects
+              label: Oggetti
+              format: number
+
+# ── Esempio futuro: aggiungere un secondo provider ────────────────────────────
+#
+# - Monitoring:
+#     - Uptime Kuma:
+#         icon: uptime-kuma.png
+#         widget:
+#           type: customapi
+#           url: http://homepage-proxy:3456/api/uptime-kuma
+#           refreshInterval: 30000
+#           mappings:
+#             - field: monitors_up
+#               label: Up
+#               format: number
+#             - field: monitors_down
+#               label: Down
+#               format: number
