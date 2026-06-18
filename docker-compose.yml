@@ -1,7 +1,7 @@
 services:
   homepage-proxy:
     build: .
-    image: ghcr.io/stefano664/homepage-proxy/homepage-proxy:0.1.0
+    image: ghcr.io/stefano664/gethomepage_proxy:0.1.0
     container_name: homepage-proxy
 
     environment:

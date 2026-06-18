@@ -1,5 +1,5 @@
 {
-  "name": "homepage-proxy",
+  "name": "gethomepage_proxy",
   "version": "0.1.0",
   "type": "module",
   "description": "Proxy HTTP per widget Homepage dashboard",
