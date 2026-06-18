@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install dependencies first (layer cached until package.json changes)
 COPY package.json ./
-RUN npm ci
+RUN npm install --omit=dev
 
 COPY . .
 
