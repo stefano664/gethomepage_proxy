@@ -1,5 +1,9 @@
 # Homepage Proxy
 
+<p align="center">
+  <img src="img/logo.png" alt="Homepage Proxy logo" width="120" />
+</p>
+
 A modular HTTP proxy for [Homepage (gethomepage.dev)](https://gethomepage.dev).  
 Exposes data from external services as JSON endpoints, ready for the `customapi` widget.
 
