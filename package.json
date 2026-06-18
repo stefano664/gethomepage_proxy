@@ -1,0 +1,13 @@
+{
+  "name": "homepage-proxy",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Proxy HTTP per widget Homepage dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.750.0"
+  }
+}

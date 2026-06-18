@@ -1,11 +1,8 @@
 services:
   homepage-proxy:
-    image: node:20-alpine
+    build: .
+    image: homepage-proxy:0.1.0
     container_name: homepage-proxy
-    working_dir: /app
-    volumes:
-      - ./:/app
-    command: sh -c "npm install && node server.js"
 
     environment:
       PORT: "3456"
