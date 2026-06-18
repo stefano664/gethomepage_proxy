@@ -1,50 +1,50 @@
 # Homepage Proxy
 
-Proxy HTTP modulare per [Homepage (gethomepage.dev)](https://gethomepage.dev).  
-Espone i dati di servizi esterni come endpoint JSON, pronti per il widget `customapi`.
+A modular HTTP proxy for [Homepage (gethomepage.dev)](https://gethomepage.dev).  
+Exposes data from external services as JSON endpoints, ready for the `customapi` widget.
 
 ---
 
-## Struttura
+## Structure
 
 ```
 homepage-proxy/
-├── server.js                    ← core HTTP, routing /api/:provider
-├── registry.js                  ← abilita/disabilita i provider
+├── server.js                    ← HTTP core, routing /api/:provider
+├── registry.js                  ← enable/disable providers
 ├── providers/
-│   ├── base.js                  ← classe astratta BaseProvider
+│   ├── base.js                  ← abstract BaseProvider class
 │   ├── hetzner-s3.js            ← Hetzner Object Storage (S3-compatible)
-│   └── template-example.js      ← template per nuovi provider
+│   └── template-example.js      ← template for new providers
 ├── package.json
 ├── docker-compose.yml
-└── homepage-services.yaml       ← snippet per Homepage
+└── homepage-services.yaml       ← snippet for Homepage
 ```
 
 ---
 
-## Endpoint disponibili
+## Available endpoints
 
-| Metodo | Path | Descrizione |
+| Method | Path | Description |
 |--------|------|-------------|
-| `GET` | `/health` | Health check + lista provider attivi |
-| `GET` | `/api` | Lista provider con endpoint |
-| `GET` | `/api/:provider` | Dati del provider specificato |
+| `GET` | `/health` | Health check + list of active providers |
+| `GET` | `/api` | List of providers with endpoints |
+| `GET` | `/api/:provider` | Data for the specified provider |
 
 ---
 
-## Aggiungere un nuovo provider
+## Adding a new provider
 
-### 1. Crea il file provider
+### 1. Create the provider file
 
 ```js
-// providers/mio-servizio.js
+// providers/my-service.js
 import { BaseProvider } from "./base.js";
 
-export class MioServizioProvider extends BaseProvider {
+export class MyServiceProvider extends BaseProvider {
   constructor() {
-    super("mio-servizio", {
-      url:   process.env.MIOSERVIZIO_URL   || "",
-      token: process.env.MIOSERVIZIO_TOKEN || "",
+    super("my-service", {
+      url:   process.env.MYSERVICE_URL   || "",
+      token: process.env.MYSERVICE_TOKEN || "",
     });
   }
 
@@ -58,61 +58,61 @@ export class MioServizioProvider extends BaseProvider {
 
     return {
       provider: this.name,
-      // ...i tuoi campi
+      // ...your fields
     };
   }
 }
 ```
 
-### 2. Registralo in `registry.js`
+### 2. Register it in `registry.js`
 
 ```js
-import { MioServizioProvider } from "./providers/mio-servizio.js";
+import { MyServiceProvider } from "./providers/my-service.js";
 
 const PROVIDERS = [
   new HetznerS3Provider(),
-  new MioServizioProvider(),   // ← aggiunto
+  new MyServiceProvider(),   // ← added
 ];
 ```
 
-### 3. Aggiungi le variabili d'ambiente in `docker-compose.yml`
+### 3. Add environment variables in `docker-compose.yml`
 
 ```yaml
-MIOSERVIZIO_URL:   "https://api.mioservizio.com"
-MIOSERVIZIO_TOKEN: "il_mio_token"
+MYSERVICE_URL:   "https://api.myservice.com"
+MYSERVICE_TOKEN: "my_token"
 ```
 
-### 4. Aggiungi il widget in Homepage `services.yaml`
+### 4. Add the widget in Homepage `services.yaml`
 
 ```yaml
-- Categoria:
-    - Mio Servizio:
+- Category:
+    - My Service:
         widget:
           type: customapi
-          url: http://homepage-proxy:3456/api/mio-servizio
+          url: http://homepage-proxy:3456/api/my-service
           mappings:
-            - field: campo_uno
-              label: Etichetta
+            - field: field_one
+              label: Label
               format: number
 ```
 
 ---
 
-## Provider inclusi
+## Included providers
 
 ### `hetzner-s3`
-Calcola spazio usato/libero/percentuale di un bucket Hetzner Object Storage.
+Calculates used/free space and percentage for a Hetzner Object Storage bucket.
 
-| Variabile | Descrizione |
-|-----------|-------------|
-| `HETZNER_ENDPOINT` | URL endpoint S3 (es. `https://fsn1.your-objectstorage.com`) |
-| `HETZNER_REGION` | Regione (default: `eu-central`) |
-| `HETZNER_ACCESS_KEY` | Access Key S3 |
-| `HETZNER_SECRET_KEY` | Secret Key S3 |
-| `HETZNER_BUCKET` | Nome del bucket |
-| `HETZNER_QUOTA_GB` | Quota massima in GB (default: `1024`) |
+| Variable | Description |
+|----------|-------------|
+| `HETZNER_ENDPOINT` | S3 endpoint URL (e.g. `https://fsn1.your-objectstorage.com`) |
+| `HETZNER_REGION` | Region (default: `eu-central`) |
+| `HETZNER_ACCESS_KEY` | S3 Access Key |
+| `HETZNER_SECRET_KEY` | S3 Secret Key |
+| `HETZNER_BUCKET` | Bucket name |
+| `HETZNER_QUOTA_GB` | Maximum quota in GB (default: `1024`) |
 
-Risposta:
+Response:
 ```json
 {
   "provider":  "hetzner-s3",
